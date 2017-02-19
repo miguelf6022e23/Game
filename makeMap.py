@@ -3,7 +3,7 @@ import pygame
 import shelve
 from pygame.locals import *
 from dialogueV2 import *
-
+import pygame, pygame.font, pygame.event, pygame.draw, string
 pygame.init()
 #----------display size----------------------------------
 dispW = 1200
@@ -186,7 +186,7 @@ def display_box(screen, message,gameDisplay):
     screen.blit(textI,((screen.get_width() / 4), (screen.get_height() / 2-screen.get_height()/8+y)))
   pygame.display.flip()
 #--------place Walls---------------------------------------
-def leftClick(lc,pos,x0,y0,gridx,gridy,dispW,dispH,M,last,a,x,y):
+def leftClick(lc,pos,x0,y0,gridx,gridy,dispW,dispH,M,last,a,x,y,intBlue,sf):
     i = 0
     j = 0
     curr = [0,0]
@@ -195,6 +195,9 @@ def leftClick(lc,pos,x0,y0,gridx,gridy,dispW,dispH,M,last,a,x,y):
         for j in range(gridy):
             curr = [dispW*i*15/1200,dispH*j*15/675]
             if ((curr[0]-p[0])**2+(curr[1]-p[1])**2)**.5 < 10:
+                if intBlue != 0:
+                    sf['int' + str(intBlue) + 'start'] = curr
+                    return M,last,lc,x,y
                 if a == 4:
                     x = curr[0]
                     y = curr[1]
@@ -261,14 +264,15 @@ while not done:
         elif event.type == pygame.MOUSEBUTTONDOWN:
             pos = pygame.mouse.get_pos()
             pressed = pygame.mouse.get_pressed()
-            if intBlue != 0:
-                textDisp(str(pos),dispW/2,dispH/2,40,black,dispW,dispH)
-                pygame.display.update()
-                pygame.time.wait(5000)
-                intBlue = 0
-            elif w == 0:
-                [M,last,lc,x,y] = leftClick(lc,pos,x0,y0,gridx,gridy,dispW,dispH,M,last,a,x,y)
-                textDisp(str(lc),dispW/2,dispH/2,40,c[a],dispW,dispH)
+            if w == 0:
+                [M,last,lc,x,y] = leftClick(lc,pos,x0,y0,gridx,gridy,dispW,dispH,M,last,a,x,y,intBlue,sf)
+                if intBlue != 0:
+                    textDisp('--------------------------------',dispW/2,dispH/2,40,(255,140,0),dispW,dispH)
+                    sf['int' + str(intBlue) + 'sfN'] = ask(gameDisplay,'Shelve File Name:  ', [])
+                    sf['int' + str(intBlue) + 'sfI'] = ask(gameDisplay,'Shelve File Interact #:  ', [])
+                    intBlue = 0
+                else:
+                    textDisp(str(lc),dispW/2,dispH/2,40,c[a],dispW,dispH)
                 pygame.display.update()
                 pygame.time.wait(200)
             else:
