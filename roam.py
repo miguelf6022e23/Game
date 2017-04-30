@@ -49,6 +49,27 @@ def chKeys():
     if keys[pygame.K_LEFT]:
         ri-=1
     return do,ri
+#------Interaction via space button---------------------------------
+def spaceKey(graph,clock,sf,hit,M,direc):
+    done = False
+    print(hit)
+    if direc == 'ri':
+        cons = [1,2,0,1]
+    elif direc == 'le':
+        cons = [0,2,0,1]
+    elif direc == 'up':
+        cons = [0,2,1,0]
+    elif direc == 'do':
+        cons = [0,3,1,0]
+    print(cons)
+    if M[hit[cons[0]]+1*cons[2]][hit[cons[1]]+1*cons[3]] ==2:
+        textbox(graph,clock,sf,sf[str((hit[cons[0]]+1*cons[2],hit[cons[1]]+1*cons[3]))])
+    elif M[hit[cons[0]]+2*cons[2]][hit[cons[1]]+2*cons[3]] ==2:
+        textbox(graph,clock,sf,sf[str((hit[cons[0]]+2*cons[2],hit[cons[1]]+2*cons[3]))])
+
+def textbox(a,b,c,d):
+    print(d)
+
 #----------display walls----------------------------------------------
 def dispWalls(M,dispW,dispH,x0,y0,gridx,gridy,gameDisplay):
     colrs = [gray,red,green,blue]
@@ -106,7 +127,7 @@ def loadMap(mapN,graph):
     graph.insert(sf['imgN'],((gridx-1)*15,(gridy-1)*15),(0,0),0)
 
     graph.resize()
-    return gridx, gridy, M, graph
+    return gridx, gridy, M, graph, sf
 
 #--------start game loop-----------------------------------------
 def roam(graph,clock,saveF):
@@ -121,7 +142,7 @@ def roam(graph,clock,saveF):
     do = 0
     ri = 0
     #[imgN,gridx,gridy,x,y,x0,y0,M,sf,NPCs] = lavTestMap(dispW,dispH)
-    [gridx,gridy,M,graph] = loadMap(saveF['mapN'],graph)
+    [gridx,gridy,M,graph,sf] = loadMap(saveF['mapN'],graph)
     hit = [0,0,0,0]
     #[fillImg,img] = resize(dispW,dispH,imgN,gridx,gridy)
     par = saveF['party']
@@ -142,7 +163,7 @@ def roam(graph,clock,saveF):
                 elif event.key == pygame.K_RIGHT:
                     ri += 1
                 elif event.key == pygame.K_SPACE:
-                    spaceKey(dispW,dispH,screenInfo,graph.gdisp,clock,sf,hit,M,direc,npcCol,NPCs)
+                    spaceKey(graph,clock,sf,hit,M,direc)
                     [do,ri] = chKeys()
                     '''
                 elif event.key == pygame.K_F11:

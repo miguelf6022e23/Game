@@ -374,6 +374,13 @@ sf['M'] = M
 sf['x'] = x
 sf['y'] = y
 sf['count'] = count
+
+for i in range(count):
+    ptr = sf['int'+str(i)]
+    while ptr != None:
+        sf[str(ptr.i)] = i
+        ptr = ptr.n
+
 sf.close()
 
 pygame.quit()
