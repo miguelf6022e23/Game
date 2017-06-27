@@ -119,10 +119,10 @@ class graphics:
         for i in range(len(self.imgs)):
             self.imgs[i].img = pygame.image.load(self.imgs[i].name)
             self.imgs[i].img = pygame.transform.scale(self.imgs[i].img, (round(self.imgs[i].rat[0]*self.dispW/1200), round(self.imgs[i].rat[1]*self.dispH/675)))
-            self.x = self.x*self.dispW/1200
-            self.y = self.y*self.dispH/675
-            self.x0 = self.x0*self.dispW/1200
-            self.y0 = self.y0*self.dispH/675
+        self.x = self.x*self.dispW/1200
+        self.y = self.y*self.dispH/675
+        self.x0 = self.x0*self.dispW/1200
+        self.y0 = self.y0*self.dispH/675
 
 #------------------------update--------------------------------------------------
     def update(self,debug):
