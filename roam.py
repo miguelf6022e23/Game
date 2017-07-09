@@ -13,6 +13,7 @@ red = (255,0,0)
 green = (0,250,0)
 blue = (0,0,250)
 gray  = (255/2,255/2,255/2)
+purple = (128,0,139)
 #--------character location-----------------------------------
 def charLoc(x,y,currV,ri,do,dispW,dispH,gameDisplay,M,hit,x0,y0,gridx,gridy,direc,npcCol):
     if ri>0:
@@ -23,6 +24,12 @@ def charLoc(x,y,currV,ri,do,dispW,dispH,gameDisplay,M,hit,x0,y0,gridx,gridy,dire
         direc = 'do'
     elif do<0:
         direc = 'up'
+
+    if (ri>0 and not npcCol[1] and min(min(M[hit[1]][hit[2]+i],0) for i in [1,2])) or (ri<0 and not npcCol[0] and min(min(M[hit[0]][hit[2]+i],0) for i in [1,2])):
+        print(M[hit[0]][hit[2]])
+
+    elif (do>0 and not npcCol[3] and min(min(M[hit[0]+i][hit[3]],0) for i in [1,2])) or (do<0 and not npcCol[2] and min(min(M[hit[0]+i][hit[2]],0) for i in [1,2])):
+        print(M[hit[0]][hit[2]])
 
     if (ri>0 and not npcCol[1] and not max(max(M[hit[1]][hit[2]+i],0) for i in [1,2])) or (ri<0 and not npcCol[0] and not max(max(M[hit[0]][hit[2]+i],0) for i in [1,2])):
         x = x+currV*dispW*ri/1200
@@ -52,7 +59,7 @@ def chKeys():
 #------Interaction via space button---------------------------------
 def spaceKey(graph,clock,sf,hit,M,direc):
     done = False
-    print(hit)
+    #print(hit)
     if direc == 'ri':
         cons = [1,2,0,1]
     elif direc == 'le':
@@ -61,7 +68,7 @@ def spaceKey(graph,clock,sf,hit,M,direc):
         cons = [0,2,1,0]
     elif direc == 'do':
         cons = [0,3,1,0]
-    print(cons)
+    #print(cons)
     if M[hit[cons[0]]+1*cons[2]][hit[cons[1]]+1*cons[3]] ==2:
         textbox(graph,clock,sf,sf[str((hit[cons[0]]+1*cons[2],hit[cons[1]]+1*cons[3]))])
     elif M[hit[cons[0]]+2*cons[2]][hit[cons[1]]+2*cons[3]] ==2:
@@ -72,7 +79,7 @@ def textbox(a,b,c,d):
 
 #----------display walls----------------------------------------------
 def dispWalls(M,dispW,dispH,x0,y0,gridx,gridy,gameDisplay):
-    colrs = [gray,red,green,blue]
+    colrs = [gray,red,green,blue,purple]
     for i in range(1,gridx-1):
         if M[i][0] != 0:
             if M[i+1][0] == M[i][0]:

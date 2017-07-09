@@ -15,6 +15,7 @@ red = (255,0,0)
 green = (0,250,0)
 blue = (0,0,250)
 gray  = (255/2,255/2,255/2)
+purple = (128,0,139)
 #--------ll node class-----------------------------------
 class llnode:
     def __init__(self, i, n=None):
@@ -45,8 +46,8 @@ y0=0
 lc = 0
 a=1
 M = sf['M']
-text = ['gray','red','green','blue','black']
-c = [gray,red,green,blue,black]
+text = ['gray','red','green','black','blue','battle']
+c = [gray,red,green,black,blue,purple]
 last = [0,0]
 dispint = 0
 intBlue = 0
@@ -94,7 +95,7 @@ def grabIntsStart(x0,y0,gridx,gridy,dispW,dispH,M):
         for j in range(gridy):
             curr = [dispW*i*15/1200,dispH*j*15/675]
             if ((curr[0]-p[0])**2+(curr[1]-p[1])**2)**.5 < 10:
-                if M[i][j] == 2 or M[i][j] == 3:
+                if M[i][j] == 2 or M[i][j] == -2:
                     ll = grabIntsRec(None,M[i][j],i,j)
                     return ll
 def checkLL(i,j,ll):
@@ -198,7 +199,7 @@ def leftClick(lc,pos,x0,y0,gridx,gridy,dispW,dispH,M,last,a,x,y,intBlue,sf):
                 if intBlue != 0:
                     sf['int' + str(intBlue) + 'start'] = curr
                     return M,last,lc,x,y
-                if a == 4:
+                if a == 3:
                     x = curr[0]
                     y = curr[1]
                     return M,last,lc,x,y
@@ -229,7 +230,7 @@ def leftClick(lc,pos,x0,y0,gridx,gridy,dispW,dispH,M,last,a,x,y,intBlue,sf):
     return M,last,lc,x,y
 #----------display walls----------------------------------
 def dispWalls(M,dispW,dispH,x0,y0,gridx,gridy,x,y):
-    colrs = [gray,red,green,blue]
+    colrs = [gray,red,green,blue,purple]
     for i in range(1,gridx-1):
         if M[i][0] != 0:
             if M[i+1][0] == M[i][0]:
@@ -294,10 +295,10 @@ while not done:
             elif event.key == pygame.K_RIGHT:
                 x0 = x0-50*dispW/1200
             elif event.key == pygame.K_SPACE:
-                if a <4:
+                if a <3:
                     a+=1
                 else:
-                    a=0
+                    a=-2
                 textDisp(text[a],dispW/2,dispH/2,40,c[a],dispW,dispH)
                 pygame.display.update()
                 pygame.time.wait(200)
@@ -316,7 +317,7 @@ while not done:
                     runn = dispint-1
                 if M[sf['int'+str(runn)].i[0]][sf['int'+str(runn)].i[1]] == 2:
                     dialogueV2(sf,'int'+str(runn)+'i',screenInfo,gameDisplay,clock,dispW,dispH)
-                elif M[sf['int'+str(runn)].i[0]][sf['int'+str(runn)].i[1]] == 3:
+                elif M[sf['int'+str(runn)].i[0]][sf['int'+str(runn)].i[1]] == -2:
                     intBlue = runn
                     textDisp('333333',dispW/2,dispH/2,40,(255,140,0),dispW,dispH)
                     pygame.display.update()
